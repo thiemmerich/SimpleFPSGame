@@ -1,48 +1,51 @@
 # FPS Game - LibGDX
-#### A first-person shooter game built with Java and LibGDX framework featuring 3D graphics, collision detection, textured environments, and a complete menu system.
 
-https://img.shields.io/badge/Game-FPS-blue
-https://img.shields.io/badge/Framework-LibGDX-green
-https://img.shields.io/badge/Language-Java-orange
-https://img.shields.io/badge/Status-In%2520Development-yellow
+A first-person shooter game built with Java and LibGDX framework featuring 3D graphics, collision detection, textured environments, and a complete menu system.
+
+![Java](https://img.shields.io/badge/Java-8%2B-orange?logo=java)
+![LibGDX](https://img.shields.io/badge/LibGDX-1.12.1-green?logo=libgdx)
+![Maven](https://img.shields.io/badge/Maven-3.6%2B-blue?logo=apache-maven)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+![Status](https://img.shields.io/badge/Status-In%20Development-red)
 
 ## Features
 ### Core Gameplay
-* First-person camera with mouse look controls
-* WASD movement with proper physics and collision detection
-* Jumping mechanics with gravity simulation
-* 3D environment with textured floors, walls, and objects
-* Collision system preventing walking through walls and objects
+- **First-person camera** with mouse look controls
+- **WASD movement** with proper physics and collision detection
+- **Jumping mechanics** with gravity simulation
+- **3D environment** with textured floors, walls, and objects
+- **Collision system** preventing walking through walls and objects
 
-## Graphics & Visuals
-* 3D rendering with LibGDX ModelBatch
-* Textured environments (grass, brick, wood, concrete)
-* Dynamic lighting with directional and ambient light
-* Custom camera system with pitch and yaw controls
+### Graphics & Visuals
+- **3D rendering** with LibGDX ModelBatch
+- **Textured environments** (grass, brick, wood, concrete)
+- **Dynamic lighting** with directional and ambient light
+- **Custom camera system** with pitch and yaw controls
 
-## User Interface
-* Main menu with navigation options
-* Pause menu accessible during gameplay
-* Options screen with settings management
-* HUD with crosshair for aiming
+### User Interface
+- **Main menu** with navigation options
+- **Pause menu** accessible during gameplay
+- **Options screen** with settings management
+- **HUD** with crosshair for aiming
 
-## Technical Features
-* Modular architecture with separated concerns
-* Custom collision detection system
-* Texture management with automatic fallbacks
-* Screen management for smooth transitions
+### Technical Features
+- **Modular architecture** with separated concerns
+- **Custom collision detection** system
+- **Texture management** with automatic fallbacks
+- **Screen management** for smooth transitions
 
 ## Getting Started
 ### Prerequisites
-* Java 8 or higher
-* Maven 3.6+
-* Git
+![Java](https://img.shields.io/badge/Java-8%2B-orange?logo=java)
+![Maven](https://img.shields.io/badge/Maven-3.6%2B-blue?logo=apache-maven)
+![Git](https://img.shields.io/badge/Git-Required-lightgrey?logo=git)
 
 ### Installation
 #### Clone the repository
-`git clone https://github.com/yourusername/fps-game-libgdx.git`
-
-`cd fps-game-libgdx`
+``` 
+git clone https://github.com/yourusername/fps-game-libgdx.git
+cd fps-game-libgdx 
+```
 
 #### Build the project
 `mvn clean compile`
