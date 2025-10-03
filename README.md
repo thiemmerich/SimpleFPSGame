@@ -1,10 +1,10 @@
 # FPS Game - LibGDX
 #### A first-person shooter game built with Java and LibGDX framework featuring 3D graphics, collision detection, textured environments, and a complete menu system.
 
-* https://img.shields.io/badge/Game-FPS-blue
-* https://img.shields.io/badge/Framework-LibGDX-green
-* https://img.shields.io/badge/Language-Java-orange
-* https://img.shields.io/badge/Status-In%2520Development-yellow
+https://img.shields.io/badge/Game-FPS-blue
+https://img.shields.io/badge/Framework-LibGDX-green
+https://img.shields.io/badge/Language-Java-orange
+https://img.shields.io/badge/Status-In%2520Development-yellow
 
 ## Features
 ### Core Gameplay
