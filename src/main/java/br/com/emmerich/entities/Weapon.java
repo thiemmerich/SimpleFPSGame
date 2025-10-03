@@ -1,76 +1,79 @@
 package br.com.emmerich.entities;
 
 public class Weapon {
-
     private String name;
-    private int maxAmmo;
     private int currentAmmo;
-    private int damage;
-    private float fireRate;
+    private int totalAmmo;
+    private int maxAmmo;
     private float reloadTime;
+    private float reloadTimer;
+    private boolean reloading;
 
-    private float timeSinceLastShot = 0f;
-    private boolean isReloading = false;
-    private float reloadTimer = 0f;
-
-    public Weapon(String name, int maxAmmo, int damage, float fireRate, float reloadTime) {
+    public Weapon(String name, int maxAmmo, int totalAmmo, float reloadTime) {
         this.name = name;
         this.maxAmmo = maxAmmo;
         this.currentAmmo = maxAmmo;
-        this.damage = damage;
-        this.fireRate = fireRate;
+        this.totalAmmo = totalAmmo;
         this.reloadTime = reloadTime;
     }
 
-    public boolean canShoot(float deltaTime) {
-        timeSinceLastShot += deltaTime;
-
-        if (isReloading) {
-            reloadTimer += deltaTime;
-            if (reloadTimer >= reloadTime) {
-                isReloading = false;
-                reloadTimer = 0f;
-                currentAmmo = maxAmmo;
-            }
-            return false;
-        }
-
-        return currentAmmo > 0 && timeSinceLastShot >= 1f / fireRate;
+    public boolean canShoot() {
+        return !reloading && currentAmmo > 0;
     }
 
     public void shoot() {
-        if (canShoot(0)) { // We check time separately
+        if (canShoot()) {
             currentAmmo--;
-            timeSinceLastShot = 0f;
-            System.out.println(name + " fired! Ammo: " + currentAmmo + "/" + maxAmmo);
         }
     }
 
+    public boolean canReload() {
+        return !reloading && currentAmmo < maxAmmo && totalAmmo > 0;
+    }
+
     public void reload() {
-        if (!isReloading && currentAmmo < maxAmmo) {
-            isReloading = true;
-            System.out.println("Reloading " + name + "...");
+        if (canReload()) {
+            reloading = true;
+            reloadTimer = 0f;
+        }
+    }
+
+    public void update(float delta) {
+        if (reloading) {
+            reloadTimer += delta;
+            if (reloadTimer >= reloadTime) {
+                int ammoNeeded = maxAmmo - currentAmmo;
+                int ammoToReload = Math.min(ammoNeeded, totalAmmo);
+
+                currentAmmo += ammoToReload;
+                totalAmmo -= ammoToReload;
+                reloading = false;
+            }
         }
     }
 
     // Getters
-    public String getName() {
-        return name;
+    public boolean isReloading() {
+        return reloading;
+    }
+
+    public float getReloadProgress() {
+        return reloadTimer / reloadTime;
     }
 
     public int getCurrentAmmo() {
         return currentAmmo;
     }
 
+    public int getTotalAmmo() {
+        return totalAmmo;
+    }
+
     public int getMaxAmmo() {
         return maxAmmo;
     }
 
-    public boolean isReloading() {
-        return isReloading;
-    }
-
-    public float getReloadProgress() {
-        return reloadTimer / reloadTime;
+    public String getName() {
+        return this.name;
     }
 }

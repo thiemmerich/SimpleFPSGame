@@ -1,7 +1,10 @@
 package br.com.emmerich.core;
 
 import br.com.emmerich.entities.ActionsHandler;
+import br.com.emmerich.entities.Player;
+import br.com.emmerich.trace.BulletTrace;
 import br.com.emmerich.entities.CustomCamera;
+import br.com.emmerich.hud.HUDManager;
 import br.com.emmerich.utils.CollisionDetector;
 import br.com.emmerich.utils.CustomEnvironment;
 import br.com.emmerich.environment.WorldBuilder;
@@ -22,9 +25,12 @@ public class BaseGame extends ApplicationAdapter {
     private ActionsHandler actionsHandler;
     private CollisionDetector collisionDetector;
     private TextureManager textureManager;
+    private HUDManager hudManager;
+    private BulletTrace bulletTrace;
 
     // Player collision
     private BoundingBox playerBounds;
+    private Player player;
 
     @Override
     public void create() {
@@ -34,7 +40,10 @@ public class BaseGame extends ApplicationAdapter {
         setupGraphics();
         setupWorld();
         setupInput();
-        actionsHandler = new ActionsHandler(camera);
+        bulletTrace = new BulletTrace();
+        hudManager = new HUDManager();
+        player = new Player(camera);
+        actionsHandler = new ActionsHandler(camera, hudManager, collisionDetector, player);
     }
 
     private void setupCamera() {
@@ -69,18 +78,27 @@ public class BaseGame extends ApplicationAdapter {
         handleInput(Gdx.graphics.getDeltaTime());
         camera.update();
 
-        // Clear screen with sky color
+        // Clear screen
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Gdx.gl.glClearColor(0.5f, 0.7f, 1.0f, 1.0f); // Sky blue
+        Gdx.gl.glClearColor(0.5f, 0.7f, 1.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         // Render 3D scene
         modelBatch.begin(camera.getPerspectiveCamera());
         modelBatch.render(worldBuilder.getInstances(), environment);
+
+        // Render bullet traces (within the same modelBatch)
+        actionsHandler.renderBulletTraces(modelBatch, environment);
+
         modelBatch.end();
 
-        // Render HUD
-        camera.renderHUD();
+        // Render HUD (on top of everything)
+        hudManager.update(Gdx.graphics.getDeltaTime());
+        hudManager.setWeapon(player.getCurrentWeapon());
+        hudManager.render();
+
+        // Handle actions
+        actionsHandler.handleActions();
     }
 
     private void handleInput(float deltaTime) {
@@ -92,6 +110,7 @@ public class BaseGame extends ApplicationAdapter {
     @Override
     public void resize(int width, int height) {
         camera.resize(width, height);
+        hudManager.resize(width, height);
     }
 
     @Override
@@ -99,5 +118,7 @@ public class BaseGame extends ApplicationAdapter {
         modelBatch.dispose();
         worldBuilder.dispose();
         textureManager.dispose();
+        hudManager.dispose();
+        bulletTrace.dispose();
     }
 }

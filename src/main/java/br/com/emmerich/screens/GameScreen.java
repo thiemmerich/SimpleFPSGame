@@ -32,12 +32,12 @@ public class GameScreen extends BaseScreen {
         }
 
         if (!isPaused) {
-            // Render actual game
+            // Render actual game (FPSGame handles its own rendering)
             baseGame.render();
         } else {
             // Render pause menu
             clearScreen();
-            super.render(delta);
+            super.render(delta); // This renders the stage for UI
         }
     }
 

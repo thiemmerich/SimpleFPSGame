@@ -2,16 +2,42 @@ package br.com.emmerich.screens;
 
 import br.com.emmerich.core.GameManager;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public abstract class BaseScreen implements Screen {
     protected GameManager game;
     protected Stage stage;
+    protected Table backgroundTable;
 
     public BaseScreen(GameManager game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
+
+        // Create default background
+        backgroundTable = new Table();
+        backgroundTable.setFillParent(true);
+        backgroundTable.setBackground(createDefaultBackground());
+        stage.addActor(backgroundTable);
+    }
+
+    private Drawable createDefaultBackground() {
+        Skin skin = new Skin();
+
+        // Create a simple white pixel
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(new Color(0.1f, 0.1f, 0.2f, 1f)); // Dark blue-gray
+        pixmap.fill();
+        skin.add("white", new Texture(pixmap));
+        pixmap.dispose();
+
+        return skin.newDrawable("white");
     }
 
     @Override

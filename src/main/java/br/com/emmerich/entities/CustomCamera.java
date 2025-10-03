@@ -3,7 +3,6 @@ package br.com.emmerich.entities;
 import br.com.emmerich.utils.CollisionDetector;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Vector3;
 
@@ -16,7 +15,9 @@ public class CustomCamera {
 
     // Movement
     private boolean grounded = true;
+    private boolean isRunning = false;
     private final Vector3 velocity = new Vector3();
+    private float moveSpeed = 5f;
 
     public CustomCamera(CollisionDetector collisionDetector, int fieldOfView, int width, int height) {
         this.collisionDetector = collisionDetector;
@@ -58,7 +59,6 @@ public class CustomCamera {
 
     public void handleMovement(float deltaTime) {
         Vector3 moveDirection = new Vector3();
-        float moveSpeed = 5f;
         float jumpForce = 8f;
 
         // Forward/Backward
@@ -124,6 +124,16 @@ public class CustomCamera {
         }
     }
 
+    public void increaseSpeedAtRunning() {
+        if (!isRunning) {
+            moveSpeed = 10f;
+            isRunning = true;
+        } else {
+            moveSpeed = 5f;
+            isRunning = false;
+        }
+    }
+
     private Vector3 getForwardVector() {
         Vector3 forward = new Vector3(camera.direction.x, 0, camera.direction.z);
         return forward.nor();
@@ -132,24 +142,6 @@ public class CustomCamera {
     private Vector3 getRightVector() {
         Vector3 right = new Vector3(camera.direction.z, 0, -camera.direction.x);
         return right.nor();
-    }
-
-    public void renderHUD() {
-        // Simple crosshair
-        if (Gdx.input.isCursorCatched()) {
-            com.badlogic.gdx.graphics.glutils.ShapeRenderer shape = new com.badlogic.gdx.graphics.glutils.ShapeRenderer();
-            shape.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled);
-            shape.setColor(Color.WHITE);
-
-            int centerX = Gdx.graphics.getWidth() / 2;
-            int centerY = Gdx.graphics.getHeight() / 2;
-
-            // Crosshair
-            shape.rect(centerX - 1, centerY - 10, 2, 20); // Vertical
-            shape.rect(centerX - 10, centerY - 1, 20, 2); // Horizontal
-
-            shape.end();
-        }
     }
 
     public void resize(int width, int height) {
